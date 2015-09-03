@@ -3,6 +3,8 @@
 set -e
 set -u
 
+: ${MAKE_CMD:="make"}
+
 # When upgrading node versions, also update the values of MIN_NODE_VERSION at
 # the top of tools/main.js and tools/server/boot.js, and the text in
 # docs/client/full-api/concepts.html and the README in tools/bundler.js.
@@ -14,12 +16,12 @@ echo BUILDING NODE "v$NODE_VERSION" IN "$DIR"
 
 # For now, use our fork with https://github.com/npm/npm/pull/5821
 git clone --branch "v${NODE_VERSION}-with-npm-5821" --depth 1 \
-    https://github.com/meteor/node.git
+    https://github.com/williambr/node.git
 cd node
 rm -rf .git
 ./configure --prefix="$DIR"
-make -j4
-make install PORTABLE=1
+${MAKE_CMD} -j4
+${MAKE_CMD} install PORTABLE=1
 # PORTABLE=1 is a node hack to make npm look relative to itself instead
 # of hard coding the PREFIX.
 

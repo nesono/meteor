@@ -147,6 +147,16 @@ var host = function () {
       _host  = "os.osx.x86_64";
     }
 
+    else if (platform === "freebsd") {
+      var machine = run('uname', '-m');
+      if (_.contains(["i386"], machine))
+        _host = "os.freebsd.i386";
+      else if (_.contains(["amd64"], machine))
+        _host = "os.freebsd.amd64";
+      else
+        throw new Error("Unsupported architecture: " + machine);
+    }
+
     else if (platform === "linux") {
       var machine = run('uname', '-m');
       if (_.contains(["i386", "i686", "x86"], machine))

@@ -3,6 +3,8 @@
 set -e
 set -u
 
+: ${MAKE_CMD:="make"}
+
 MONGO_VERSION="2.6.7"
 
 source "$(dirname $0)/build-dev-bundle-common.sh"
@@ -13,7 +15,7 @@ echo BUILDING MONGO "v$MONGO_VERSION" IN "$DIR"
 # We want to build a binary that includes SSL support but does not depend on a
 # particular version of openssl on the host system.
 
-OPENSSL="openssl-1.0.2"
+OPENSSL="openssl-1.0.2d"
 OPENSSL_URL="http://www.openssl.org/source/$OPENSSL.tar.gz"
 wget $OPENSSL_URL || curl -O $OPENSSL_URL
 tar xzf $OPENSSL.tar.gz
@@ -21,12 +23,14 @@ tar xzf $OPENSSL.tar.gz
 cd $OPENSSL
 if [ "$UNAME" == "Linux" ]; then
     ./config --prefix="$DIR/build/openssl-out" no-shared
+elif [ "$UNAME" == "FreeBSD" ]; then
+    ./config --prefix="$DIR/build/openssl-out" no-shared
 else
     # This configuration line is taken from Homebrew formula:
     # https://github.com/mxcl/homebrew/blob/master/Library/Formula/openssl.rb
     ./Configure no-shared zlib-dynamic --prefix="$DIR/build/openssl-out" darwin64-x86_64-cc enable-ec_nistp_64_gcc_128
 fi
-make install
+${MAKE_CMD} install
 
 # To see the mongo changelog, go to http://www.mongodb.org/downloads,
 # click 'changelog' under the current version, then 'release notes' in
@@ -36,7 +40,7 @@ cd "$DIR/build"
 # We use Meteor fork since we added some changes to the building script.
 # Our patches allow us to link most of the libraries statically.
 git clone --branch "ssl-r$MONGO_VERSION" --depth 1 \
-    git://github.com/meteor/mongo.git
+    git://github.com/williambr/mongo.git
 cd mongo
 rm -rf .git
 
@@ -55,6 +59,9 @@ elif [ "$OS" == "linux" ]; then
       MONGO_FLAGS+="--64"
     fi
     scons $MONGO_FLAGS mongo mongod
+elif [ "$OS" == "freebsd" ]; then
+    MONGO_FLAGS+="--openssl=$DIR/build/openssl-out/lib "
+    /usr/local/bin/scons $MONGO_FLAGS mongo mongod
 else
     echo "We don't know how to compile mongo for this platform"
     exit 1

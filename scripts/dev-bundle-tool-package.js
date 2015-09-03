@@ -43,7 +43,7 @@ var packageJson = {
     "node-inspector": "0.7.4",
     chalk: "0.5.1",
     sqlite3: "3.0.2",
-    netroute: "0.2.5",
+    netroute: "git://github.com/williambr/node-netroute.git#d06b4effea24afab2080e3f283e287a4fcff0fe0",
     phantomjs: "1.9.12",
     "http-proxy": "1.11.1",
     "wordwrap": "0.0.2",
@@ -57,7 +57,7 @@ var packageJson = {
     // 2.4.0 (more or less, the package.json change isn't committed) plus our PR
     // https://github.com/williamwicks/node-eachline/pull/4
     eachline: "https://github.com/meteor/node-eachline/tarball/ff89722ff94e6b6a08652bf5f44c8fffea8a21da",
-    pathwatcher: "4.1.0",
+    pathwatcher: "git://github.com/williambr/node-pathwatcher.git#f63edd9adab4a40e3b25370f8c8e5170c247783b",
     'lru-cache': '2.6.4',
     // We use our own fork because cordova-lib does not respect a silent
     // option and by defaults outputs all command output to stdout/stderr.

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -e
 set -u
@@ -138,14 +138,16 @@ find . -path '*/esprima-fb/test' | xargs rm -rf
 cd "$DIR/lib/node_modules/fibers/bin"
 shrink_fibers
 
-# Download BrowserStackLocal binary.
-BROWSER_STACK_LOCAL_URL="https://browserstack-binaries.s3.amazonaws.com/BrowserStackLocal-07-03-14-$OS-$ARCH.gz"
-
-cd "$DIR/build"
-curl -O $BROWSER_STACK_LOCAL_URL
-gunzip BrowserStackLocal*
-mv BrowserStackLocal* BrowserStackLocal
-mv BrowserStackLocal "$DIR/bin/"
+if [ "$OS" != "freebsd" ]; then
+  # Download BrowserStackLocal binary.
+  BROWSER_STACK_LOCAL_URL="https://browserstack-binaries.s3.amazonaws.com/BrowserStackLocal-07-03-14-$OS-$ARCH.gz"
+  
+  cd "$DIR/build"
+  curl -O $BROWSER_STACK_LOCAL_URL
+  gunzip BrowserStackLocal*
+  mv BrowserStackLocal* BrowserStackLocal
+  mv BrowserStackLocal "$DIR/bin/"
+fi
 
 # remove our temporary npm3 directory
 rm -rf "$DIR/bin/npm3"

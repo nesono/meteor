@@ -1791,7 +1791,8 @@ class ServerTarget extends JsImageTarget {
       'os.linux.x86_32': 'Linux_i686',
       'os.linux.x86_64': 'Linux_x86_64',
       'os.osx.x86_64': 'Darwin_x86_64',
-      'os.windows.x86_32': 'Windows_x86_32'
+      'os.windows.x86_32': 'Windows_x86_32',
+      'os.freebsd.amd64': 'FreeBSD_amd64'
     };
     var platform = archToPlatform[self.arch];
     if (! platform) {

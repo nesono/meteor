@@ -1460,8 +1460,8 @@ files.pathwatcherWatch = function (...args) {
   args[0] = files.convertToOSPath(args[0]);
   // don't import pathwatcher until the moment we actually need it
   // pathwatcher has a record of keeping some global state
-  var pathwatcher = require('pathwatcher');
-  return require("pathwatcher").watch(...args);
+  //var pathwatcher = require('pathwatcher');
+  //return require("pathwatcher").watch(...args);
 };
 
 files.readBufferWithLengthAndOffset = function (filename, length, offset) {
